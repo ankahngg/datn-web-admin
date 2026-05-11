@@ -3,25 +3,20 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { LoanFilter, UserLoan, UserLoanResponse } from "@/model/Loan";
-import { getLoanById, getLoans } from "@/service/modules/loan";
+import { getLoanById, getLoans, LoanParams } from "@/service/modules/loan";
 import { Page } from "@/service/api";
 
-export interface UseGetLoansOptions {
-  filter: LoanFilter;
-  page?: number;
-  size?: number;
-  sort?: string;
-}
 
-export function useGetLoans(options: UseGetLoansOptions) {
-  const { filter, page = 0, size = 1000, sort = "timeCreated,DESC" } = options;
+
+export function useGetLoans(options: LoanParams) {
+  const { filter, pageable } = options;
  
   return useQuery<Page<UserLoanResponse>, Error>({
-    queryKey: ["useGetLoan", filter, page, size, sort],
+    queryKey: ["useGetLoan", filter, pageable],
     queryFn: async () => {
       const data = await getLoans({
         filter: { ...filter },
-        pageable: { page, size, sort },
+        pageable: pageable
       });
 
       return data;
@@ -29,15 +24,16 @@ export function useGetLoans(options: UseGetLoansOptions) {
   });
 }
 
-export function useGetLoans2(options: UseGetLoansOptions) {
-  const { filter, page = 0, size = 1000, sort = "timeCreated,DESC" } = options;
+export function useGetLoans2(options: LoanParams) {
+  const { filter, pageable } = options;
+  
  
   return useQuery<UserLoan[], Error>({
-    queryKey: ["useGetLoan", page, size, sort],
+    queryKey: ["useGetLoan", filter, pageable],
     queryFn: async () => {
       const data = await getLoans({
         filter: { ...filter },
-        pageable: { page, size, sort },
+        pageable: pageable
       });
 
         const res: UserLoan[] = data.content.map((item) => ({

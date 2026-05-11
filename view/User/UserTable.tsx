@@ -1,12 +1,9 @@
 import { DataTableCard, DataTableContent, DataTablePagination, defaultHeader, sortableHeader } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { User, UserFilter } from "@/model/User";
-import { formatDate, formatEth, formatUsdc } from "@/utils";
+import { formatDate, formatEther, formatUsdc } from "@/utils";
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
-import { Badge, MoreHorizontal, CheckCircle, XCircle } from "lucide-react";
-import { title } from "process";
-import { DropdownMenu } from "radix-ui";
-import React from "react";
+
 
 
 const columns: ColumnDef<User>[] = 
@@ -47,7 +44,7 @@ const columns: ColumnDef<User>[] =
         header: defaultHeader("Số dư ETH"),
         cell: ({ row }) => {
             return (
-                formatEth(row.original.ethBalance)
+                formatEther(row.original.ethBalance)
             )
         }
       },
@@ -55,14 +52,14 @@ const columns: ColumnDef<User>[] =
         accessorKey: "phone",
         header: defaultHeader("SDT"),
       },
-      {
-        accessorKey: "email",
-        header: defaultHeader("Email"),
-      },
-      {
-        accessorKey: "address",
-        header: defaultHeader("Địa chỉ"),
-      },
+      // {
+      //   accessorKey: "email",
+      //   header: defaultHeader("Email"),
+      // },
+      // {
+      //   accessorKey: "address",
+      //   header: defaultHeader("Địa chỉ"),
+      // },
     ];
 
 export type UserTableProps = {

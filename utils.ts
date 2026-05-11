@@ -14,7 +14,8 @@ export function formatDate(dateString?: string) {
   }).format(new Date(dateString));
 }
 
-export function shortAddress(address: string, startChars = 6, endChars = 4) {
+export function shortAddress(address?: string , startChars = 6, endChars = 4) {
+  if (!address) return "-";
   if (address.length <= startChars + endChars) return address;
   return `${address.slice(0, startChars)}...${address.slice(-endChars)}`;
 }
@@ -34,17 +35,20 @@ export function formatUsdc(value: bigint) {
     }).format(numericValue);
   }
 
-  export function formatEth(value: bigint) {
-    const numericValue = Number(value) / 1e18;
-
-    return new Intl.NumberFormat("vi-VN", {
-      maximumFractionDigits: 18,
-    }).format(numericValue);
-  }
-
   import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: any[]) {
   return twMerge(clsx(inputs));
+}
+
+export function isNotProcessing(status: string) {
+  return status.includes("PENDING") == false;
+}
+
+export function formatEther(wei: bigint) {
+    const etherValue = Number(wei) / 1e18;
+    return new Intl.NumberFormat("vi-VN", {
+      maximumFractionDigits: 6,
+    }).format(etherValue);
 }

@@ -71,6 +71,12 @@ export const AuctionActionLabelMap: Record<AuctionAction, string> = {
     PLACE_BID: "Đặt giá",
 };
 
+export const AUCTION_ADMIN_ACTIONS = {
+    "VIEW_DETAIL" : "Xem chi tiết",
+}
+
+export type AuctionAdminAction = keyof typeof AUCTION_ADMIN_ACTIONS;
+
 export const mockAuctionsResponse: Page<AuctionResponse> = {
     content: [
         {

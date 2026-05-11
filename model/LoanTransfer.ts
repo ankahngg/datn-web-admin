@@ -63,6 +63,12 @@ export type CreateLoanTransferApplicationSubmit2 = {
   loanId: bigint;
 }
 
+export const LOAN_TRANSFER_ADMIN_ACTIONS = {
+  "VIEW_DETAILS": "Xem chi tiết",
+}
+
+export type LoanTransferAdminAction = keyof typeof LOAN_TRANSFER_ADMIN_ACTIONS;
+
 export const mockLoanTransfersResponse: Page<UserLoanTransferResponse> = {
 
   content: [

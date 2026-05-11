@@ -16,6 +16,6 @@ export function sortableHeader<TData>(label: string) {
 }
 
 export function defaultHeader(label: string) {
-  return () => <span className="text-foreground">{label}</span>;
+  return () => <span className="text-muted-foreground">{label}</span>;
 }
 

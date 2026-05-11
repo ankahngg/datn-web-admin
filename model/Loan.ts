@@ -86,6 +86,12 @@ export const payActionVariantMap: Record<PayActionResponse, "success" | "seconda
   END: "success",
 };
 
+export const LOAN_ADMIN_ACTION = {
+  "VIEW_DETAIL": "Xem chi tiết",
+}
+
+export type LoanAdminAction = keyof typeof LOAN_ADMIN_ACTION;
+
 export const mockLoans: Page<UserLoanResponse> = {
   content: [
     {

@@ -12,7 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Landmark } from "lucide-react";
+import { Landmark, Scale } from "lucide-react";
 import { FileText } from "lucide-react";
 import { ChartColumn } from 'lucide-react';
 import { HandCoins } from 'lucide-react';
@@ -60,9 +60,18 @@ function Leftbar() {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href="/loan-transfer-application" className="font-heading">
+                <Link href="/loan-transfer" className="font-heading">
                   <HandCoins className="mr-2" />
-                  Đơn chuyển nhượng vay
+                  Chuyển nhượng vay
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link href="/auction" className="font-heading">
+                    <Scale className="mr-2" />
+                    Đấu giá
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

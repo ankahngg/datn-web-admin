@@ -87,8 +87,8 @@ export const mockLoanApplications: Page<UserLoanApplicationResponse> = {
       collateralAmount: BigInt("1"),
         nftId: BigInt("1003"),
       status: "PENDING_CANCELED",
-      timeCreated: "2024-04-15T11:45:00Z",
-      createdAt: "2024-04-15T11:45:00Z",
+      timeCreated: "2024-04-12T09:30:00Z",
+      createdAt: "2024-04-12T09:30:00Z",
       offerCount: 1,
     },
   ],
@@ -163,3 +163,14 @@ export type LoanApplicationSubmitValues = {
   loanTermMonths: number;
   totalRepayment: number;
 };
+
+export const LOAN_APPLICATION_ADMIN_ACTION = [
+  "VIEW_OFFERS",
+]
+
+export const LoanApplicationAdminActionLabelMap: Record<typeof LOAN_APPLICATION_ADMIN_ACTION[number], string> = {
+  VIEW_OFFERS: "Xem các đề nghị vay",
+}
+
+export type LoanApplicationAdminAction = typeof LOAN_APPLICATION_ADMIN_ACTION[number];
+

@@ -9,8 +9,9 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { DatePicker } from "../ui/date-picker";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
-type FieldType = "text" | "date" | "multi-select" | "number";
+type FieldType = "text" | "date" | "select" | "number";
 
 interface FilterField<T> {
   name: Extract<keyof T, string>;
@@ -37,15 +38,15 @@ export function buildSchema<T>(fields: FilterField<T>[]) {
         break;
 
       case "number":
-        schema = z.number();
+        schema = z.coerce.number();
         break;
 
       case "date":
         schema = z.date();
         break;
 
-      case "multi-select":
-        schema = z.array(z.string());
+      case "select":
+        schema = z.string();
         break;
 
       default:
@@ -69,9 +70,35 @@ export function TableFilter<T>({ config, onFilter }: TableFilterProps<T>) {
   const renderField = (field: FilterField<T>,) => {
     switch (field.type) {
 
+      case "number":
+        return (
+          <FieldGroup key={field.name}>
+            <Controller
+              control={form.control}
+              name={field.name as any}
+              render={({ field: f, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel className="text-muted-foreground">{field.label}</FieldLabel>
+                  <Input
+                    type="text"
+                    {...f}
+                    value={f.value !== undefined ? String(f.value) : ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (schema.shape[field.name].safeParse(value).success) {
+                        f.onChange(value);
+                      }
+                    }}
+                  />
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        );
+
       case "text":
         return (
-          <FieldGroup>
+          <FieldGroup key={field.name}>
             <Controller
               control={form.control}
               name={field.name as any}
@@ -92,7 +119,7 @@ export function TableFilter<T>({ config, onFilter }: TableFilterProps<T>) {
 
       case "date":
         return (
-          <FieldGroup>
+          <FieldGroup key={field.name}>
             <Controller
               control={form.control}
               name={field.name as any}
@@ -108,6 +135,37 @@ export function TableFilter<T>({ config, onFilter }: TableFilterProps<T>) {
             />
           </FieldGroup>
         );
+
+        case "select":
+          return (
+            <FieldGroup key={field.name}>
+              <Controller
+                control={form.control}
+                name={field.name as any}
+                render={({ field: f, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel className="text-muted-foreground">{field.label}</FieldLabel>
+                    <Select 
+                      value={f.value as string}
+                      onValueChange={(value) => f.onChange(value.length > 0 ? value : undefined)}
+                      
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Chọn ..."/>
+                        <SelectContent position="popper">
+                          {field.options?.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </SelectTrigger>
+                    </Select>
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          );
     }
   };
 

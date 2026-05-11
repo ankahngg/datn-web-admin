@@ -2,10 +2,11 @@
 import { LoanFilter } from "@/model/Loan";
 import {
   LoanApplication,
+  LoanApplicationFilter,
   UserLoanApplicationResponse,
 } from "@/model/LoanApplication";
 import { LoanOffer, UserLoanOfferResponse } from "@/model/LoanOffer";
-import { Page } from "@/service/api";
+import { Page, Pageable } from "@/service/api";
 import {
   getUserLoanApplications,
   getUserLoanApplicationById,
@@ -21,23 +22,21 @@ import { useQuery } from "@tanstack/react-query";
 const USER_LOAN_APPLICATIONS_KEY = "userLoanApplications";
 const USER_LOAN_OFFERS_KEY = "userLoanOffers";
 
-export interface UseUserLoanHistoryOptions {
-  filter: LoanFilter; // Define a proper type for the filter based on your API requirements
-  page?: number;
-  size?: number;
-  sort?: string; // e.g. "createdAt,DESC"
+export interface LoanApplicationParams {
+  filter: LoanApplicationFilter;
+  pageable?: Pageable;
 }
 
-export function useUserLoanApplications(options: UseUserLoanHistoryOptions) {
-  const { filter, page = 0, size = 10, sort = "createdAt,DESC" } = options;
+export function useUserLoanApplications(options: LoanApplicationParams) {
+  const { filter, pageable } = options;
   const enabled = Boolean(filter);
 
   const query = useQuery<Page<UserLoanApplicationResponse>, Error>({
-    queryKey: [USER_LOAN_APPLICATIONS_KEY, filter, page, size, sort],
+    queryKey: [USER_LOAN_APPLICATIONS_KEY, filter, pageable],
     queryFn: () => {
       const params = {
         filter: filter ?? {},
-        pageable: { page, size, sort },
+        pageable
       };
       return getUserLoanApplications(params);
     },
@@ -47,16 +46,17 @@ export function useUserLoanApplications(options: UseUserLoanHistoryOptions) {
   return query;
 }
 
-export function useUserLoanApplications2(options: UseUserLoanHistoryOptions) {
-  const { filter, page = 0, size = 10, sort = "createdAt,DESC" } = options;
+export function useUserLoanApplications2(options: LoanApplicationParams) {
+    const { filter, pageable } = options;
+
   const enabled = Boolean(filter);
 
   const query = useQuery<LoanApplication[], Error>({
-    queryKey: [USER_LOAN_APPLICATIONS_KEY, filter, page, size, sort],
+    queryKey: [USER_LOAN_APPLICATIONS_KEY, filter, pageable],
     queryFn: async () => {
       const params = {
         filter: filter ?? {},
-        pageable: { page, size, sort },
+        pageable: pageable
       };
       const response = await getUserLoanApplications(params);
       return response.content.map((application) => ({
@@ -81,15 +81,15 @@ export function useUserLoanApplications2(options: UseUserLoanHistoryOptions) {
   return query;
 }
 
-export function useUserLoanOffers(options: UseUserLoanHistoryOptions) {
-  const { filter, page = 0, size = 10, sort = "createdAt,DESC" } = options;
+export function useUserLoanOffers(options: LoanApplicationParams) {
+  const { filter, pageable } = options;
   const query = useQuery<Page<UserLoanOfferResponse>, Error>({
-    queryKey: [USER_LOAN_OFFERS_KEY, filter, page, size, sort],
+    queryKey: [USER_LOAN_OFFERS_KEY, filter, pageable],
     queryFn: () => {
       
       const params = {
         filter,
-        pageable: { page, size, sort },
+        pageable
       };
       return getUserLoanOffers(params);
     },
