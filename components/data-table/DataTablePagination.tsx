@@ -42,7 +42,7 @@ export function DataTablePagination<TData>({
           </SelectContent>
         </Select>
         <Button
-          variant="outline"
+          className="my-btn"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
@@ -50,7 +50,7 @@ export function DataTablePagination<TData>({
           Trước
         </Button>
         <Button
-          variant="outline"
+          className="my-btn"
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}

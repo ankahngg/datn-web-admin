@@ -45,13 +45,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col m-0 w-screen">
         <Providers>
-          <SidebarProvider>
-            <Leftbar />
-            <main className="px-(--main-page-padding-x) w-full overflow-hidden">
-              <Header />
-              <div className="mt-8">{children}</div>
-            </main>
-          </SidebarProvider>
+          {children}
         </Providers>
       </body>
     </html>

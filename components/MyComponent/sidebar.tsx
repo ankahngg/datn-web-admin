@@ -12,7 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Landmark, Scale } from "lucide-react";
+import { ArrowRightLeft, Cog, Landmark, Scale, Sparkle, SquareActivity, Users } from "lucide-react";
 import { FileText } from "lucide-react";
 import { ChartColumn } from 'lucide-react';
 import { HandCoins } from 'lucide-react';
@@ -25,9 +25,10 @@ function Leftbar() {
     <Sidebar>
       <div className="p-4">
         <SidebarHeader className="text-xl text-sidebar-primary-foreground font-mono
-        border-b-2 border-(--devider-color) pb-4 flex-row">
-          <Boxes className="mr-2" />
-          Lending Web Admin
+        border-b-2 border-(--devider-color) pb-4 flex-row items-start">
+          <Boxes />
+          <div className="text-lg">Lending Web</div>
+          <div className="text-xs text-sidebar-accent">ADMIN</div>
         </SidebarHeader>
         <SidebarContent className="mt-8">
          
@@ -35,7 +36,7 @@ function Leftbar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/user" className="font-heading">
-                  <ChartColumn className="mr-2" />
+                  <Users className="mr-2" />
                   Người dùng
                 </Link>
               </SidebarMenuButton>
@@ -43,7 +44,7 @@ function Leftbar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/loan-application" className="font-heading">
-                  <Landmark className="mr-2" />
+                  <FileText className="mr-2" />
                   Đơn vay
                 </Link>
               </SidebarMenuButton>
@@ -52,7 +53,7 @@ function Leftbar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/loan" className="font-heading">
-                  <FileText className="mr-2" />
+                  <HandCoins className="mr-2" />
                   Khoản vay
                 </Link>
               </SidebarMenuButton>
@@ -61,7 +62,7 @@ function Leftbar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/loan-transfer" className="font-heading">
-                  <HandCoins className="mr-2" />
+                  <ArrowRightLeft className="mr-2" />
                   Chuyển nhượng vay
                 </Link>
               </SidebarMenuButton>
@@ -79,8 +80,17 @@ function Leftbar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/event" className="font-heading">
-                  <Banknote className="mr-2" />
-                  Event
+                  <Sparkle className="mr-2" />
+                  Sự kiện
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link href="/listener" className="font-heading">
+                  <SquareActivity className="mr-2" />
+                  Quản lý lắng nghe
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -88,7 +98,7 @@ function Leftbar() {
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="/config" className="font-heading">
-                  <Banknote className="mr-2" />
+                  <Cog className="mr-2" />
                   Cấu hình
                 </Link>
               </SidebarMenuButton>

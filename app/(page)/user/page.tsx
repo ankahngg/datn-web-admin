@@ -30,6 +30,9 @@ function UserMainPage() {
 
     return (
         <div className="space-y-6">
+            <div>
+                <h2 className="text-2xl font-bold mb-4">Quản lý người dùng</h2>
+            </div>
             <TableFilter<UserFilter>
                 config={[
                     {

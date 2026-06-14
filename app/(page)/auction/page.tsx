@@ -15,46 +15,44 @@ import { useRouter } from "next/navigation";
 import { LoanAdminAction, LoanFilter, UserLoan } from "@/model/Loan";
 import { useGetLoans2 } from "@/hooks/use-get-loans";
 import { LoanTable } from "@/view/Loan/LoanTable";
-import { EventFilter } from "@/model/Events/EventFilter";
-import { useEvents } from "@/hooks/use-events";
-import { EVENT_LABEL_MAP, EVENT_OPTIONS, EventAdminAction, EventType } from "@/model/Event";
-import { EventTable } from "@/view/Event/EventTable";
+import { Auction, AuctionAdminAction, AuctionFilter } from "@/model/Auction";
+import AuctionTable from "@/view/Auction/AuctionTable";
+import { useAuctions2 } from "@/hooks/use-auction";
 
-function EventPage() {
+function AuctionPage() {
     const router = useRouter();
-  const [eventFilter, setEventFilter] = useState<EventFilter>({});
+  const [auctionFilter, setAuctionFilter] = useState<AuctionFilter>({});
   
     const {
-        data : eventData,
-        error : eventError,
-        isLoading : eventIsLoading,
-    } = useEvents({ filter: eventFilter, pageable: { page: 0, size: 10, sort: "timestamp,DESC" } });
-    
+        data: auctionData,
+        error: auctionError,
+        isLoading: auctionIsLoading,
+    } = useAuctions2({ filter: auctionFilter, pageable: { page: 0, size: 10, sort: "createdAt,DESC" } });
 
-  if (eventIsLoading) {
+  if (auctionIsLoading) {
     return <FullScreenLoading />;
   }
 
-  if (!eventData) {
+  if (!auctionData) {
     return (
-      <FullScreenError message="Đã có lỗi xảy ra khi tải dữ liệu người dùng." />
+      <FullScreenError message="Đã có lỗi xảy ra khi tải dữ liệu." />
     );
   }
 
-  function onFilter(filter: EventFilter) {
+  function onFilter(filter: AuctionFilter) {
     alert("Filter applied: " + JSON.stringify(filter));
-    setEventFilter(filter);
+    setAuctionFilter(filter);
   }
 
   function onTableAction(
-    action: EventAdminAction,
-    event: EventType,
+    action: AuctionAdminAction,
+    auction: Auction,
   ) {
-    console.log("Action:", action, "on event:", event);
+    console.log("Action:", action, "on auction:", auction);
 
     switch (action) {
         case "VIEW_DETAIL": 
-            // router.push(`/event/${ev}`);
+            router.push(`/auction/${auction.auctionId}`);
             break;
         default:
             console.warn("Unknown action:", action);
@@ -63,42 +61,38 @@ function EventPage() {
 
   return (
     <div className="space-y-6">
-      <TableFilter<EventFilter>
+      <div>
+                <h2 className="text-2xl font-bold mb-4">Quản lý đấu giá</h2>
+            </div>
+      <TableFilter<AuctionFilter>
         config={[
           {
-            name: "eventName",
-            label: "Tên sự kiện",
-            type: "select",
-            options: EVENT_OPTIONS,
-        
+            name: "startPrice",
+            label: "Giá khởi điểm",
+            type: "number",
             required: false,
           },
           {
-            name: "txHash",
-            label: "Hash giao dịch",
+            name: "highestBid",
+            label: "Giá cao nhất",
+            type: "number",
+            required: false,
+          },
+          {
+            name: "highestBidder",
+            label: "Người đặt giá cao nhất",
             type: "text",
             required: false,
           },
           {
-            name: "blockNumber",
-            label: "Số block",
-            type: "number",
-            required: false,
-          },
-          {
-            name: "logIndex",
-            label: "Log Index",
-            type: "number",
-            required: false,
-          },
-          {
-            name: "eventStatus",
-            label: "Trạng thái sự kiện",
+            name: "status",
+            label: "Trạng thái",
             type: "select",
-            options: [
-                { label: "Đang chờ xử lý", value: "PROCESSING" },
-                { label: "Thành công", value: "DONE" },
-                { label: "Thất bại", value: "FAILED" },
+             options: [
+              { label: "Đang chờ tạo", value: "PENDING_CREATED" },
+                { label: "Đã tạo", value: "CREATED" },
+                { label: "Đang chờ kết thúc", value: "PENDING_FINALIZED" },
+                { label: "Đã kết thúc", value: "FINALIZED" },
             ],
             required: false,
           },
@@ -119,13 +113,13 @@ function EventPage() {
         onFilter={(filter: UserFilter) => onFilter(filter)}
       />
 
-        <EventTable
-            title={`Danh sách sự kiện - ${EVENT_LABEL_MAP[eventData.eventName as string] || "Tất cả sự kiện"}`}
-          data={eventData}
-          onTableAction={onTableAction}
-         />
+      <AuctionTable 
+        data={auctionData}
+        onAuctionTableAction={onTableAction}
+
+       />
     </div>
   );
 }
 
-export default EventPage;
+export default AuctionPage;

@@ -61,6 +61,9 @@ function LoanApplicationPage() {
 
   return (
     <div className="space-y-6">
+      <div>
+                <h2 className="text-2xl font-bold mb-4">Quản lý chuyển nhượng khoản vay</h2>
+            </div>
       <TableFilter<LoanTransferFilter>
         config={[
           {

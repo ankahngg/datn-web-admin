@@ -29,6 +29,12 @@ export type EventResponse = {
   lastProcessedBlock: bigint;
 };
 
+export type Event = {
+  eventName: string;
+  data: EventType[];
+  lastProcessedBlock: bigint;
+}
+
 export type EventType =
   | AcceptLoanTransferApplicationEvent
   | ApplyLoanApplicationEvent

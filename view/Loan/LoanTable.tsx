@@ -24,7 +24,7 @@ import {
 import { formatUsdc, shortAddress } from "@/utils";
 
 import { LOAN_ADMIN_ACTION, LoanAdminAction, UserLoan, UserLoanStatusLabelMap, UserLoanStatusVariantMap } from "@/model/Loan";
-import { useDataTableState, sortableHeader, DataTableCard, DataTableToolbar, DataTableContent, DataTablePagination } from "@/components/data-table";
+import { useDataTableState, sortableHeader, DataTableCard, DataTableToolbar, DataTableContent, DataTablePagination, defaultHeader } from "@/components/data-table";
 
 
 type LoanTableProps = {
@@ -34,21 +34,13 @@ type LoanTableProps = {
 };
 
 export function LoanTable({ loans, isLoading = false, onTableAction }: LoanTableProps) {
-  const {
-    sorting,
-    setSorting,
-    columnFilters,
-    setColumnFilters,
-    globalFilter,
-    setGlobalFilter,
-    clearFilters,
-  } = useDataTableState();
+  
 
   const columns = React.useMemo<ColumnDef<UserLoan>[]>(
     () => [
       {
         accessorKey: "borrower",
-        header: sortableHeader<UserLoan>("Người vay"),
+        header: defaultHeader("Người vay"),
         cell: ({ row }) => (
           <span className="font-mono text-foreground">
             {shortAddress(row.original.borrower)}
@@ -57,22 +49,22 @@ export function LoanTable({ loans, isLoading = false, onTableAction }: LoanTable
       },
       {
         accessorKey: "loanAmount",
-        header: sortableHeader<UserLoan>("Số tiền vay"),
+        header: defaultHeader("Số tiền vay"),
         cell: ({ row }) => <span className="text-foreground">{formatUsdc(row.original.loanAmount)}</span>,
       },
       {
         accessorKey: "totalAmountHaveToPay",
-        header: sortableHeader<UserLoan>("Tổng phải trả"),
+        header: defaultHeader("Tổng phải trả"),
         cell: ({ row }) => <span className="text-foreground">{formatUsdc(row.original.totalAmountHaveToPay)}</span>,
       },
       {
         accessorKey: "amountPaid",
-        header: sortableHeader<UserLoan>("Đã trả"),
+        header: defaultHeader("Đã trả"),
         cell: ({ row }) => <span className="text-foreground">{formatUsdc(row.original.amountPaid)}</span>,
       },
       {
         accessorKey: "loanStatus",
-        header: sortableHeader<UserLoan>("Trạng thái"),
+        header: defaultHeader("Trạng thái"),
         cell: ({ row }) => {
           const status = row.original.loanStatus;
           return <Badge variant={UserLoanStatusVariantMap[status]}>{UserLoanStatusLabelMap[status]}</Badge>;
@@ -80,7 +72,7 @@ export function LoanTable({ loans, isLoading = false, onTableAction }: LoanTable
       },
       {
         accessorKey: "timeCreated",
-        header: sortableHeader<UserLoan>("Thời gian tạo"),
+        header: defaultHeader("Thời gian tạo"),
         cell: ({ row }) => (
           <span className="text-foreground">
             {new Date(row.original.timeCreated).toLocaleDateString("vi-VN")}
@@ -89,12 +81,12 @@ export function LoanTable({ loans, isLoading = false, onTableAction }: LoanTable
       },
       {
         accessorKey: "duration",
-        header: sortableHeader<UserLoan>("Thời hạn"),
+        header: defaultHeader("Thời hạn"),
         cell: ({ row }) => <span className="text-foreground">{row.original.duration.toString()}</span>,
       },
       {
         id: "actions",
-        header: () => <span className="text-foreground">Hành động</span>,
+        header: () => <span className="">Hành động</span>,
         cell: ({ row }) => {
           const loan = row.original;
 
@@ -131,14 +123,6 @@ export function LoanTable({ loans, isLoading = false, onTableAction }: LoanTable
   const table = useReactTable({
     data: loans,
     columns,
-    state: {
-      sorting,
-      columnFilters,
-      globalFilter,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -153,32 +137,6 @@ export function LoanTable({ loans, isLoading = false, onTableAction }: LoanTable
 
   return (
     <DataTableCard title="Danh sách khoản cho vay">
-      <DataTableToolbar
-        searchPlaceholder="Tìm theo người vay, số tiền..."
-        searchValue={globalFilter}
-        onSearchChange={setGlobalFilter}
-        statusFilter={{
-          value: (table.getColumn("loanStatus")?.getFilterValue() as string) ?? "all",
-          onChange: (value) =>
-            table.getColumn("loanStatus")?.setFilterValue(value === "all" ? undefined : value),
-          options: [
-            { value: "all", label: "Tất cả trạng thái" },
-            { value: "PENDING_CREATED", label: UserLoanStatusLabelMap.PENDING_CREATED },
-            { value: "CREATED", label: UserLoanStatusLabelMap.CREATED },
-            { value: "PENDING_PAID", label: UserLoanStatusLabelMap.PENDING_PAID },
-            { value: "PAID", label: UserLoanStatusLabelMap.PAID },
-            { value: "PENDING_AUCTION", label: UserLoanStatusLabelMap.PENDING_AUCTION },
-            { value: "AUCTION", label: UserLoanStatusLabelMap.AUCTION },
-            { value: "PENDING_LIQUIDATION", label: UserLoanStatusLabelMap.PENDING_LIQUIDATION },
-            { value: "LIQUIDATED", label: UserLoanStatusLabelMap.LIQUIDATED },
-          ],
-        }}
-        onClearFilters={() => {
-          clearFilters();
-          table.setPageIndex(0);
-        }}
-      />
-
       <DataTableContent
         table={table}
         columnsLength={columns.length}

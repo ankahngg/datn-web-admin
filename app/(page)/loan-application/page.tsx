@@ -2,7 +2,6 @@
 
 import { FullScreenLoading } from "@/components/MyComponent/FullLoadingScreen";
 import { FullScreenError } from "@/components/MyComponent/FullScreenError";
-import { useGetUsers, useGetUsers2 } from "@/hooks/use-get-users";
 
 import { User, UserFilter } from "@/model/User";
 import { TableFilter } from "@/components/data-table/TableFilter";
@@ -12,44 +11,44 @@ import { LoanApplication, LoanApplicationAdminAction, LoanApplicationFilter } fr
 import { useUserLoanApplications2 } from "@/hooks/use-get-loan-application";
 import LoanApplicationTable from "@/view/LoanApplication/LoanApplicationTable";
 import { useRouter } from "next/navigation";
-import { LoanAdminAction, LoanFilter, UserLoan } from "@/model/Loan";
-import { useGetLoans2 } from "@/hooks/use-get-loans";
-import { LoanTable } from "@/view/Loan/LoanTable";
 
-function LoanPage() {
+function LoanApplicationPage() {
     const router = useRouter();
-  const [loanFilter, setLoanFilter] = useState<LoanFilter>({});
-  
-    const {
-        data: loanData,
-        error: loanError,
-        isLoading: loanIsLoading,
-    } = useGetLoans2({ filter: loanFilter, pageable: { page: 0, size: 10, sort: "createdAt,DESC" } });
+  const [loanApplicationFilter, setLoanApplicationFilter] =
+    useState<LoanApplicationFilter>({});
+  const {
+    data: loanApplicationData,
+    error: loanApplicationError,
+    isLoading: loanApplicationIsLoading,
+  } = useUserLoanApplications2({
+    filter: loanApplicationFilter,
+    pageable: { page: 0, size: 10, sort: "createdAt,DESC" },
+  });
 
-  if (loanIsLoading) {
+  if (loanApplicationIsLoading) {
     return <FullScreenLoading />;
   }
 
-  if (!loanData) {
+  if (loanApplicationError || !loanApplicationData) {
     return (
       <FullScreenError message="Đã có lỗi xảy ra khi tải dữ liệu người dùng." />
     );
   }
 
-  function onFilter(filter: LoanFilter) {
+  function onFilter(filter: LoanApplicationFilter) {
     alert("Filter applied: " + JSON.stringify(filter));
-    setLoanFilter(filter);
+    setLoanApplicationFilter(filter);
   }
 
   function onTableAction(
-    action: LoanAdminAction,
-    loan: UserLoan,
+    action: LoanApplicationAdminAction,
+    application: LoanApplication,
   ) {
-    console.log("Action:", action, "on loan:", loan);
+    console.log("Action:", action, "on application:", application);
 
     switch (action) {
-        case "VIEW_DETAIL": 
-            router.push(`/loan/${loan.loanId}`);
+        case "VIEW_OFFERS": 
+            router.push(`/loan-application/${application.applicationId}`);
             break;
         default:
             console.warn("Unknown action:", action);
@@ -58,6 +57,9 @@ function LoanPage() {
 
   return (
     <div className="space-y-6">
+      <div>
+                <h2 className="text-2xl font-bold mb-4">Quản lý đơn vay</h2>
+            </div>
       <TableFilter<LoanApplicationFilter>
         config={[
           {
@@ -76,12 +78,12 @@ function LoanPage() {
               { label: "NFT", value: "NFT" },
             ],
           },
-          // {
-          //   name: "collateralAmount",
-          //   label: "Số lượng tài sản thế chấp",
-          //   type: "number",
-          //   required: false,
-          // },
+          {
+            name: "collateralAmount",
+            label: "Số lượng tài sản thế chấp",
+            type: "number",
+            required: false,
+          },
           {
             name: "nftId",
             label: "ID NFT",
@@ -118,13 +120,14 @@ function LoanPage() {
         onFilter={(filter: UserFilter) => onFilter(filter)}
       />
 
-      <LoanTable 
-        loans={loanData}
-        isLoading={loanIsLoading}
-        onTableAction={onTableAction}
-       />
+      <LoanApplicationTable
+        title="Danh sách đơn vay"
+        emptyText="Chưa có đơn vay nào"
+        data={loanApplicationData}
+        onAction={onTableAction}
+      />
     </div>
   );
 }
 
-export default LoanPage;
+export default LoanApplicationPage;
