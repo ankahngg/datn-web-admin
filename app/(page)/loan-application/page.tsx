@@ -36,7 +36,6 @@ function LoanApplicationPage() {
   }
 
   function onFilter(filter: LoanApplicationFilter) {
-    alert("Filter applied: " + JSON.stringify(filter));
     setLoanApplicationFilter(filter);
   }
 

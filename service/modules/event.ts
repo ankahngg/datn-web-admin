@@ -19,7 +19,7 @@ export async function getEvents({
     }
 
     const data = await request<EventResponse>({
-        path: "/api/v1/events",
+        path: "/admin/events",
         method: "GET",
         query: {
             ...filter,

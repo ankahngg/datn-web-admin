@@ -84,6 +84,7 @@ export async function request<TResponse, TBody = unknown>(
       ...headers,
     },
     signal,
+    credentials: "include", // include cookies for authentication
   };
 
   if (body !== undefined && method !== "GET") {
@@ -95,15 +96,32 @@ export async function request<TResponse, TBody = unknown>(
     console.log("[API]", method, url, body);
   }
 
-  const res = await fetch(url, init);
+  let res = await fetch(url, init);
 
-  
+  if (res.status === 401) {
+
+    const refreshRes = await fetch(
+      `${API_BASE_URL}/api/v1/auth/refresh`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+
+    if (!refreshRes.ok) {
+      throw new Error("Session expired");
+    }
+
+    res = await fetch(url, init);
+  }
+
   const json: ApiResponse<TResponse> = await res.json();
   
   if (devMode) {
     // eslint-disable-next-line no-console
     console.log("[API Response]", url, json.data);
   }
+
 
   // ❗ check HTTP error
   if (!res.ok) {

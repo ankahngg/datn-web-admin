@@ -42,7 +42,7 @@ function EventPage() {
   }
 
   function onFilter(filter: EventFilter) {
-    alert("Filter applied: " + JSON.stringify(filter));
+    
     setEventFilter(filter);
   }
 
@@ -73,7 +73,6 @@ function EventPage() {
             label: "Tên sự kiện",
             type: "select",
             options: EVENT_OPTIONS,
-        
             required: false,
           },
           {

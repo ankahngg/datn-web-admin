@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenu } from "@/components/ui/dropdown-menu";
 import { LOAN_ADMIN_ACTION, LoanAdminAction } from "@/model/Loan";
-import { LISTENER_ACTIONS, ListenerActions, ListenerStatus } from "@/model/Manage/ListenerStatus";
+import { LISTENER_ACTIONS, ListenerActionLabelMap, ListenerActions, ListenerStatus } from "@/model/Manage/ListenerStatus";
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
@@ -56,12 +56,13 @@ function ListenerStatusTable({ data, onTableAction }: ListenerStatusTableProps) 
                 <DropdownMenuLabel className="text-foreground">Hành động</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {
-                    Object.entries(LISTENER_ACTIONS).map(([actionKey, actionLabel]) => (
+                    LISTENER_ACTIONS.map((actionKey) => (
                         <DropdownMenuItem
                             key={actionKey}
                             onSelect={() => onTableAction(actionKey as ListenerActions, listener)}
+                             className="cursor-pointer"
                         >
-                            {actionLabel}
+                            {ListenerActionLabelMap[actionKey as ListenerActions]}
                         </DropdownMenuItem>
                     ))
                 }

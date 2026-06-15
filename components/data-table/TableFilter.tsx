@@ -171,7 +171,17 @@ export function TableFilter<T>({ config, onFilter }: TableFilterProps<T>) {
 
   return (
     <form
-      onSubmit={form.handleSubmit((data) => onFilter(data as T))}
+      onSubmit={form.handleSubmit((data) => onFilter({
+        ...data,
+        // Convert Date objects to ISO strings for easier handling in the parent component
+        ...Object.fromEntries(
+          Object.entries(data).map(([key, value]) => [
+            key,
+            value instanceof Date ? value.toISOString().replace('Z','') : value,
+          ])
+        ),
+       } as T))
+      }
       className="space-y-4"
     >
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

@@ -41,7 +41,7 @@ import {
   EventProcessingStatusVariantMap,
 } from "@/model/Events/BlockchainEventBase";
 import ActionButton from "@/components/MyComponent/ActionButton";
-import { FAILED_EVENT_ACTIONS, FailedEvent, FailedEventAction } from "@/model/Manage/FailedEvent";
+import { FAILED_EVENT_ACTIONS, FailedEvent, FailedEventAction, FailedEventActionLabelMap } from "@/model/Manage/FailedEvent";
 
 type EventTableProps = {
   title: string;
@@ -57,10 +57,6 @@ export function FailedEventTable({
   title,
 }: EventTableProps) {
   const columns: ColumnDef<FailedEvent>[] = [
-    {
-      accessorKey: "blockNumber",
-      header: defaultHeader("Số Block"),
-    },
     {
         accessorKey: "eventName",
         header: defaultHeader("Tên sự kiện"),
@@ -88,8 +84,10 @@ export function FailedEventTable({
         accessorKey: "timeResolved",
         header: defaultHeader("Thời gian giải quyết"),
     },
-
-    
+    {
+        accessorKey: "event",
+        header: defaultHeader("Dữ liệu sự kiện"),
+    },
     {
       header: "Hành động",
       cell: ({ row }) => {
@@ -106,8 +104,8 @@ export function FailedEventTable({
               <DropdownMenuLabel className="text-foreground">
                 Hành động
               </DropdownMenuLabel>
-              {Object.entries(FAILED_EVENT_ACTIONS).map(
-                ([actionKey, actionLabel]) => (
+              {FAILED_EVENT_ACTIONS.map(
+                (actionKey) => (
                   <DropdownMenuItem
                     key={actionKey}
                     onSelect={() =>
@@ -115,7 +113,7 @@ export function FailedEventTable({
                     }
                     className="cursor-pointer"
                   >
-                    {actionLabel}
+                    {FailedEventActionLabelMap[actionKey as FailedEventAction]}
                   </DropdownMenuItem>
                 ),
               )}

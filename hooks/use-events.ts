@@ -31,13 +31,14 @@ export function useEvents2(options : EventPrams) {
                 filter: { ...filter },
                 pageable: pageable
             });
+            console.log("Raw event data from API:", data);
             var event: Event = {} as Event;
             event.eventName = data.eventName;
             event.lastProcessedBlock = data.lastProcessedBlock;
-            event.data = data.data.content.map(event => ({
-                ...event,
-                createdAt: formatDate(event.createdAt),
-            }));
+            event.data = data.data?.content.map((item) => {
+                return item
+            }) ?? [];
+            console.log("Transformed event data:", event);
             return event;
         }
     });

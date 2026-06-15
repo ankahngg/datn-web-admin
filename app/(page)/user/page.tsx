@@ -26,8 +26,6 @@ function UserMainPage() {
         setUserFilter(filter);
     }
 
-    
-
     return (
         <div className="space-y-6">
             <div>

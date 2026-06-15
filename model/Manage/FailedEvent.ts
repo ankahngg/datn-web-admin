@@ -42,12 +42,16 @@ export type FailedEventFilter = {
     toTimeCreated?: string;   // local date-time string
 }
 
-export const FAILED_EVENT_ACTIONS = "RETRY";
+export const FAILED_EVENT_ACTIONS = [
+    "RETRY",
+    "VIEW",
+] as const;
 
 export type FailedEventAction = typeof FAILED_EVENT_ACTIONS[number];
 
 export const FailedEventActionLabelMap: Record<FailedEventAction, string> = {
     RETRY: "Chạy lại",
+    VIEW: "Xem chi tiết",
 }
 
 export const mockFailedEvents: FailedEventResponse[] = [

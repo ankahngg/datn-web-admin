@@ -12,7 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { ArrowRightLeft, Cog, Landmark, Scale, Sparkle, SquareActivity, Users } from "lucide-react";
+import { ArrowRightLeft, CircleAlert, Cog, Landmark, Scale, Sparkle, SquareActivity, Users } from "lucide-react";
 import { FileText } from "lucide-react";
 import { ChartColumn } from 'lucide-react';
 import { HandCoins } from 'lucide-react';
@@ -97,12 +97,21 @@ function Leftbar() {
 
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
+                <Link href="/failed-event" className="font-heading">
+                  <CircleAlert className="mr-2" />
+                  Sự kiện thất bại
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            {/* <SidebarMenuItem>
+              <SidebarMenuButton asChild>
                 <Link href="/config" className="font-heading">
                   <Cog className="mr-2" />
                   Cấu hình
                 </Link>
               </SidebarMenuButton>
-            </SidebarMenuItem>
+            </SidebarMenuItem> */}
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter />

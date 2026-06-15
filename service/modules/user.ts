@@ -17,7 +17,7 @@ export async function getUserList( {
     }
 
     const data = await request<Page<UserListResponse>>({
-        path : "/api/v1/users",
+        path : "/api/v1/user-assets",
         method: "GET",
         query: {
             ...filter,

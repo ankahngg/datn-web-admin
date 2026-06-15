@@ -40,7 +40,6 @@ function AuctionPage() {
   }
 
   function onFilter(filter: AuctionFilter) {
-    alert("Filter applied: " + JSON.stringify(filter));
     setAuctionFilter(filter);
   }
 

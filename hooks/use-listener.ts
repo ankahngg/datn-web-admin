@@ -20,11 +20,12 @@ export function useListenerStatus2() {
         queryKey: ["listenerStatus2"],
         queryFn: async () => {
             const response = await getListenerStatus();
+            console.log("Raw listener status response:", response);
             return response.map(item => ({
                 eventName: item.eventName,
                 isRunning: item.isRunning,
                 lastProcessedBlock: item.lastProcessedBlock,
-                lastHeartbeat: formatDate(new Date(item.lastHeartbeat).toLocaleString()),
+                lastHeartbeat: formatDate(new Date(item.lastHeartbeat).toISOString()),
             }));
         }
     })

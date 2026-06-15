@@ -11,7 +11,7 @@ function Page() {
   const router = useRouter();
 
   const { data, error, isLoading } = useListenerStatus2();
-
+    console.log("Listener status data:", data);
     if (isLoading) {
         return <FullScreenLoading />;
     }

@@ -7,20 +7,8 @@ import { useGetUsers, useGetUsers2 } from "@/hooks/use-get-users";
 import { User, UserFilter } from "@/model/User";
 import { TableFilter } from "@/components/data-table/TableFilter";
 import { useState } from "react";
-import UserTable from "@/view/User/UserTable";
-import {
-  LoanApplication,
-  LoanApplicationAdminAction,
-  LoanApplicationFilter,
-} from "@/model/LoanApplication";
-import { useUserLoanApplications2 } from "@/hooks/use-get-loan-application";
-import LoanApplicationTable from "@/view/LoanApplication/LoanApplicationTable";
 import { useRouter } from "next/navigation";
-import { LoanAdminAction, LoanFilter, UserLoan } from "@/model/Loan";
-import { useGetLoans2 } from "@/hooks/use-get-loans";
-import { LoanTable } from "@/view/Loan/LoanTable";
-import { EventFilter } from "@/model/Events/EventFilter";
-import { useEvents, useEvents2, useFailedEvents2 } from "@/hooks/use-events";
+import { useFailedEvents2 } from "@/hooks/use-events";
 import {
   EVENT_LABEL_MAP,
   EVENT_OPTIONS,
@@ -58,7 +46,6 @@ function Page() {
   }
 
   function onFilter(filter: FailedEventFilter) {
-    alert("Filter applied: " + JSON.stringify(filter));
     setFailedEventFilter(filter);
   }
 
@@ -68,8 +55,14 @@ function Page() {
     switch (action) {
       case "RETRY":
         try {
-            await retryFailedEvent([event.id]);
-            alert("Chạy lại sự kiện thành công")
+            const res = await retryFailedEvent([event.id]);
+            console.log("Retry result:", res);
+            if(res.isSuccess) {
+              alert("Chạy lại sự kiện thành công")
+            }
+            else {
+              alert("Chạy lại sự kiện thất bại. Vui lòng thử lại.");
+            }
         }
         catch (error) {
             console.error("Failed to retry event:", error);
@@ -94,7 +87,6 @@ function Page() {
             label: "Tên sự kiện",
             type: "select",
             options: EVENT_OPTIONS,
-
             required: false,
           },
           {
@@ -102,7 +94,7 @@ function Page() {
             label: "Trạng thái",
             type: "select",
             options: [
-              { label: "Tất cả", value: "" },
+              // { label: "Tất cả", value: "" },
                 { label: "Đã giải quyết", value: "true" },
                 { label: "Chưa giải quyết", value: "false" },
             ],

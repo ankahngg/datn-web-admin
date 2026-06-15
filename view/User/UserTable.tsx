@@ -16,10 +16,10 @@ const columns: ColumnDef<User>[] =
         accessorKey: "walletAddress",
         header: defaultHeader("Địa chỉ ví"),
       },
-      {
-        accessorKey: "name",
-        header: defaultHeader("Tên"),
-      },
+    //   {
+    //     accessorKey: "name",
+    //     header: defaultHeader("Tên"),
+    //   },
       
       {
         accessorKey: "createdAt",
@@ -49,17 +49,22 @@ const columns: ColumnDef<User>[] =
         }
       },
       {
-        accessorKey: "phone",
-        header: defaultHeader("SDT"),
+        accessorKey: "nftCount",
+        header: defaultHeader("Số lượng NFT"),
       },
-      // {
-      //   accessorKey: "email",
-      //   header: defaultHeader("Email"),
-      // },
-      // {
-      //   accessorKey: "address",
-      //   header: defaultHeader("Địa chỉ"),
-      // },
+
+    //   {
+    //     accessorKey: "phone",
+    //     header: defaultHeader("SDT"),
+    //   },
+    //   {
+    //     accessorKey: "email",
+    //     header: defaultHeader("Email"),
+    //   },
+    //   {
+    //     accessorKey: "address",
+    //     header: defaultHeader("Địa chỉ"),
+    //   },
     ];
 
 export type UserTableProps = {

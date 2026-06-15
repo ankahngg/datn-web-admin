@@ -23,7 +23,7 @@ export async function getLoans({
   }
 
   const data = await request<Page<UserLoanResponse>>({
-    path: "/api/v1/user-loans",
+    path: "/api/v1/loans",
     method: "GET",
     query: {
       ...filter,
