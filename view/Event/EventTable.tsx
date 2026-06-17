@@ -22,53 +22,85 @@ import {
 } from "@tanstack/react-table";
 
 import { formatDate, formatUsdc, shortAddress } from "@/utils";
-import {DataTableCard, DataTableToolbar, DataTableContent, DataTablePagination, defaultHeader } from "@/components/data-table";
-import { EVENT_ADMIN_ACTIONS, EventAdminAction, EventResponse, EventType } from "@/model/Event";
-import { BlockchainEventBase, EventProcessingStatusLabelMap, EventProcessingStatusVariantMap } from "@/model/Events/BlockchainEventBase";
+import {
+  DataTableCard,
+  DataTableToolbar,
+  DataTableContent,
+  DataTablePagination,
+  defaultHeader,
+} from "@/components/data-table";
+import {
+  EVENT_ADMIN_ACTIONS,
+  EventAdminAction,
+  EventResponse,
+  EventType,
+} from "@/model/Event";
+import {
+  BlockchainEventBase,
+  EventProcessingStatusLabelMap,
+  EventProcessingStatusVariantMap,
+} from "@/model/Events/BlockchainEventBase";
 import ActionButton from "@/components/MyComponent/ActionButton";
 
-
 type EventTableProps = {
-    title : string;
+  title: string;
   data: EventType[];
   isLoading?: boolean;
   onTableAction: (action: EventAdminAction, loan: EventType) => void;
 };
 
-export function EventTable({ data, isLoading = false, onTableAction, title }: EventTableProps) {
- 
+export function EventTable({
+  data,
+  isLoading = false,
+  onTableAction,
+  title,
+}: EventTableProps) {
   const columns: ColumnDef<EventType>[] = [
-      {
-        accessorKey: "blockNumber",
-        header: defaultHeader("Số Block"),
+    {
+      accessorKey: "blockNumber",
+      header: defaultHeader("Số Block"),
+    },
+    {
+      accessorKey: "logIndex",
+      header: defaultHeader("Chỉ số Log"),
+    },
+    {
+      accessorKey: "txHash",
+      header: defaultHeader("Hash Giao dịch"),
+      cell: ({ row }) => {
+        const txHash = row.original.txHash;
+        const etherscanUrl = `https://sepolia.etherscan.io/tx/${txHash}`;
+        return (
+          <a
+            href={etherscanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-xs hover:underline hover:text-blue-600"
+          >
+            {shortAddress(txHash)}
+          </a>
+        );
       },
-      {
-        accessorKey: "logIndex",
-        header: defaultHeader("Chỉ số Log"),
-        
+    },
+    {
+      accessorKey: "createdAt",
+      header: defaultHeader("Thời gian"),
+      cell: ({ row }) => formatDate(row.original.createdAt),
+    },
+    {
+      accessorKey: "eventStatus",
+      header: defaultHeader("Trạng thái"),
+      cell: ({ row }) => {
+        return (
+          <Badge
+            variant={EventProcessingStatusVariantMap[row.original.eventStatus]}
+          >
+            {EventProcessingStatusLabelMap[row.original.eventStatus]}
+          </Badge>
+        );
       },
-      {
-        accessorKey: "txHash",
-        header: defaultHeader("Hash Giao dịch"),
-        cell: ({ row }) => shortAddress(row.original.txHash),
-      },
-      {
-        accessorKey: "createdAt",
-        header: defaultHeader("Thời gian"),
-        cell: ({ row }) => formatDate(row.original.createdAt),
-      },
-      {
-        accessorKey: "eventStatus",
-        header: defaultHeader("Trạng thái"),
-        cell: ({ row }) => {
-            return (
-                <Badge variant={EventProcessingStatusVariantMap[row.original.eventStatus]}>
-                    {EventProcessingStatusLabelMap[row.original.eventStatus]}
-                </Badge>
-            );
-        }
-      },
-      {
+    },
+    {
       header: "Hành động",
       cell: ({ row }) => {
         const data = row.original;
@@ -84,15 +116,19 @@ export function EventTable({ data, isLoading = false, onTableAction, title }: Ev
               <DropdownMenuLabel className="text-foreground">
                 Hành động
               </DropdownMenuLabel>
-                {Object.entries(EVENT_ADMIN_ACTIONS).map(([actionKey, actionLabel]) => (
-                    <DropdownMenuItem
-                        key={actionKey}
-                        onSelect={() => onTableAction(actionKey as EventAdminAction, data)}
-                        className="cursor-pointer"
-                    >
-                        {actionLabel}
-                    </DropdownMenuItem>
-                ))}
+              {Object.entries(EVENT_ADMIN_ACTIONS).map(
+                ([actionKey, actionLabel]) => (
+                  <DropdownMenuItem
+                    key={actionKey}
+                    onSelect={() =>
+                      onTableAction(actionKey as EventAdminAction, data)
+                    }
+                    className="cursor-pointer"
+                  >
+                    {actionLabel}
+                  </DropdownMenuItem>
+                ),
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -108,13 +144,15 @@ export function EventTable({ data, isLoading = false, onTableAction, title }: Ev
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-    
+
   return (
     <DataTableCard title={title}>
       <DataTableContent
         table={table}
         columnsLength={columns.length}
-        emptyMessage={isLoading ? "Đang tải dữ liệu..." : "Không có khoản cho vay phù hợp."}
+        emptyMessage={
+          isLoading ? "Đang tải dữ liệu..." : "Không có khoản cho vay phù hợp."
+        }
       />
 
       <DataTablePagination table={table} />

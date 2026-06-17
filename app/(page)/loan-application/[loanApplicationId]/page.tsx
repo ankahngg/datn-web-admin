@@ -81,12 +81,12 @@ export default function LoanOffersPage() {
 
   const borrowerOffers = offers.filter(
     (item) =>
-      item.requester.toLowerCase() == application.borrower.toLowerCase(),
+      item.requester?.toLowerCase() == application.borrower?.toLowerCase(),
   );
 
   const lenderOffers = offers.filter(
     (item) =>
-      item.requester.toLowerCase() != application.borrower.toLowerCase(),
+      item.requester?.toLowerCase() != application.borrower?.toLowerCase(),
   );
 
   const accpeptedOffer = application.acceptedOfferId
@@ -252,7 +252,6 @@ export default function LoanOffersPage() {
                 requests={borrowerOffers}
                 application={application}
                 emptyText="Chưa có offer nào từ người tạo đơn"
-
                 hilightRowId={
                   accpeptedOffer ? accpeptedOffer.id.toString() : undefined
                 }

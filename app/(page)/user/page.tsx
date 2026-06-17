@@ -39,24 +39,24 @@ function UserMainPage() {
                         type: "text",
                         required: false,
                     },
-                    {
-                        name: "name",
-                        label: "Tên người dùng",
-                        type: "text",
-                        required: false,
-                    },
-                    {
-                        name: "email",
-                        label: "Email",
-                        type: "text",
-                        required: false,
-                    },
-                    {
-                        name: "phone",
-                        label: "Số điện thoại",
-                        type: "text",
-                        required: false,
-                    },
+                    // {
+                    //     name: "name",
+                    //     label: "Tên người dùng",
+                    //     type: "text",
+                    //     required: false,
+                    // },
+                    // {
+                    //     name: "email",
+                    //     label: "Email",
+                    //     type: "text",
+                    //     required: false,
+                    // },
+                    // {
+                    //     name: "phone",
+                    //     label: "Số điện thoại",
+                    //     type: "text",
+                    //     required: false,
+                    // },
                     {
                         name: "fromTimeCreated",
                         label: "Ngày tạo từ",

@@ -84,10 +84,10 @@ export function FailedEventTable({
         accessorKey: "timeResolved",
         header: defaultHeader("Thời gian giải quyết"),
     },
-    {
-        accessorKey: "event",
-        header: defaultHeader("Dữ liệu sự kiện"),
-    },
+    // {
+    //     accessorKey: "event",
+    //     header: defaultHeader("Dữ liệu sự kiện"),
+    // },
     {
       header: "Hành động",
       cell: ({ row }) => {

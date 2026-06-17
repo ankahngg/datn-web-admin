@@ -8,7 +8,7 @@ export async function getListenerStatus() {
         return mockListenerStatus;
     }
 
-    const data = await request<ListenerStatusResponse[]>({
+    const data = await request<ListenerStatusResponse>({
         path: "/admin/listener/status",
         method: "GET",
     });

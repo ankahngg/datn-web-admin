@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenu } from "@/components/ui/dropdown-menu";
 import { LOAN_ADMIN_ACTION, LoanAdminAction } from "@/model/Loan";
 import { LISTENER_ACTIONS, ListenerActionLabelMap, ListenerActions, ListenerStatus } from "@/model/Manage/ListenerStatus";
+import { formatDate } from "@/utils";
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
@@ -37,7 +38,14 @@ function ListenerStatusTable({ data, onTableAction }: ListenerStatusTableProps) 
         },
         {
             accessorKey: "lastHeartbeat",
-            header: defaultHeader("Lần cuối hoạt động"),
+            header: defaultHeader("Lần cuối nhận sự kiện"),
+            cell: ({ row }) => {
+                const lastHeartbeat = row.original.lastHeartbeat;
+                const date = new Date(lastHeartbeat);
+                return (
+                    <span>{formatDate(date.toISOString())}</span>
+                );
+            }
         },
         {
             id: "actions",
