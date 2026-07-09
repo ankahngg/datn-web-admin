@@ -1,4 +1,3 @@
-
 import { SidebarProvider } from "@/components/ui/sidebar";
 import Leftbar from "@/components/MyComponent/sidebar";
 import Header from "@/components/MyComponent/header";

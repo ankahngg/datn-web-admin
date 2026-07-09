@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import Leftbar from "@/components/MyComponent/sidebar";
 import Header from "@/components/MyComponent/header";
+import ProtectedLayout from "./protectedLayout";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,22 +34,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn(
-        "h-full",
-        "antialiased",
-        geistSans.variable,
-        geistMono.variable,
-        "font-sans",
-        inter.variable,
-      )}
-    >
-      <body className="min-h-full flex flex-col m-0 w-screen">
-        <Providers>
-          {children}
-        </Providers>
-      </body>
-    </html>
+    <ProtectedLayout>
+      <html
+        lang="en"
+        className={cn(
+          "h-full",
+          "antialiased",
+          geistSans.variable,
+          geistMono.variable,
+          "font-sans",
+          inter.variable,
+        )}
+      >
+        <body className="min-h-full flex flex-col m-0 w-screen">
+          <Providers>
+            {children}
+          </Providers>
+        </body>
+      </html>
+    </ProtectedLayout>
   );
 }

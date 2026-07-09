@@ -26,6 +26,8 @@ export default function LoginPage() {
       if(res.success) {
         setMessage("Đăng nhập thành công!");
         setError("");
+        const maxAgeInSeconds = 10* 60;
+        localStorage.setItem("access_token_expire_in", String(Date.now() + maxAgeInSeconds * 1000));
         router.push("/user");
       }
       else {
