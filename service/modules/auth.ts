@@ -43,4 +43,5 @@ export async function logout() : Promise<void> {
         const errorData = await response.json();
         throw new Error(errorData.message || "Logout failed");
     }
+    localStorage.removeItem("access_token_expire_in");
 }
