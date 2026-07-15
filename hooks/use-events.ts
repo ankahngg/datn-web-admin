@@ -4,7 +4,7 @@ import { Page } from "@/service/api";
 import { EventPrams, getEvents } from "@/service/modules/event";
 import { FailedEventParams, getFailedEvents } from "@/service/modules/failed-event";
 import { formatDate } from "@/utils";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export function useEvents(options : EventPrams) {
     const { filter, pageable } = options;
@@ -26,6 +26,7 @@ export function useEvents2(options : EventPrams) {
 
     return useQuery<Event, Error>({
         queryKey: ["useEvents2", filter, pageable],
+        placeholderData: keepPreviousData,
         queryFn: async () => {
             const data = await getEvents({
                 filter: { ...filter },

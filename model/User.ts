@@ -68,6 +68,20 @@ export interface UserNftResponse {
     createdAt: string;
 }
 
+export type UserNft = {
+  id: number;
+  nftId: bigint;
+  nftAddress: string;
+  tokenId: bigint;
+  name?: string;
+  description?: string;
+    collectionName?: string;
+  timeCreated: string;
+  status: UserNFTResponseStatus;
+  timeWithdrawn?: string;
+
+};
+
 export const mockUsersResponse: Page<UserListResponse> = {
      content: [
             {

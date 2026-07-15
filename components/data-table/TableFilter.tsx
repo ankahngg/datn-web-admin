@@ -26,6 +26,12 @@ type TableFilterProps<T> = {
   onFilter: (data: T) => void;
 };
 
+function formatLocalIsoDate(date: Date) {
+  const pad = (value: number, length = 2) => String(value).padStart(length, "0");
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.${pad(date.getMilliseconds(), 3)}`;
+}
+
 export function buildSchema<T>(fields: FilterField<T>[]) {
   const shape: Record<string, any> = {};
 
@@ -177,7 +183,7 @@ export function TableFilter<T>({ config, onFilter }: TableFilterProps<T>) {
         ...Object.fromEntries(
           Object.entries(data).map(([key, value]) => [
             key,
-            value instanceof Date ? value.toISOString().replace('Z','') : value,
+            value instanceof Date ? formatLocalIsoDate(value) : value,
           ])
         ),
        } as T))

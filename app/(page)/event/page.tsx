@@ -42,7 +42,6 @@ function EventPage() {
   }
 
   function onFilter(filter: EventFilter) {
-    
     setEventFilter(filter);
   }
 
@@ -64,8 +63,8 @@ function EventPage() {
   return (
     <div className="space-y-6">
       <div>
-                <h2 className="text-2xl font-bold mb-4">Quản lý sự kiện</h2>
-            </div>
+          <h2 className="text-2xl font-bold mb-4">Quản lý sự kiện</h2>
+      </div>
       <TableFilter<EventFilter>
         config={[
           {
@@ -118,7 +117,7 @@ function EventPage() {
             required: false,
           },
         ]}
-        onFilter={(filter: UserFilter) => onFilter(filter)}
+        onFilter={(filter: EventFilter) => onFilter(filter)}
       />
 
         <EventTable

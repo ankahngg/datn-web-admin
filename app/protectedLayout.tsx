@@ -11,7 +11,7 @@ function ProtectedLayout({
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {
-    const expireIn = localStorage.getItem("access_token_expire_in");
+    const expireIn = localStorage.getItem("access_token_expire_in_admin");
     if (
       pathname != "/login" &&
       (expireIn == null || Number(expireIn) < Date.now())
